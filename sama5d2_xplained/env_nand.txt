@@ -1,0 +1,15 @@
+# disable mmc, qspi boot in BSC_CR
+demo_disable_mmc=mw.l 0xf8045400 0x00040e0f 1; mw.l 0xf8048054 0x66830004 1;
+turn_blue_led=mw.l 0xFC038040 0x00000001; mw.l 0xFC038044 0x00000100; mw.l 0xFC038054 0x00000001;
+# file names
+demo_bootstrap_file=at91bootstrap-sama5d2_xplained.bin
+demo_uboot_file=u-boot-sama5d2-xplained.bin
+demo_uboot_env=u-boot-env.bin
+demo_dtb_file=at91-sama5d2_xplained.dtb
+demo_kernel_file=zImage
+update_spi_boot=fatload mmc 1 $load_addr ${demo_bootstrap_file};sf write $load_addr 0 $filesize;
+update_spi_uboot=fatload mmc 1 $load_addr ${demo_uboot_file}; sf write $load_addr 0x8000 $filesize
+update_spi_env=fatload mmc 1 $load_addr ${demo_uboot_env};sf write $load_addr 0x4000 $filesize
+update_spi_dtb=fatload mmc 1 $load_addr ${demo_dtb_file};sf write $load_addr 0x60000 $filesize;
+update_spi_kernel=fatload mmc 1 $load_addr ${demo_kernel_file};sf write $load_addr 0x6c000 $filesize;
+demo_flash=sf probe 0; sf erase 0 400000; mmcinfo; run update_spi_boot; run update_spi_uboot; run update_spi_env; run update_spi_dtb; run update_spi_kernel; run demo_disable_mmc;
