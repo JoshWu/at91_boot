@@ -27,11 +27,12 @@ Script {
         var SDMMC_1_DISABLE = 1 << 11
         var SDMMC_0_DISABLE = 1 << 10
         var NFC_DISABLE = 2 << 8
+        var SPI_0_DISABLE = 3 << 4
         var SPI_1_DISABLE = 3 << 6
         var QSPI_1_DISABLE = 3 << 2
         var QSPI_0_DISABLE = 3 << 0
-        port.writeu32(GPBR_0, EXT_MEM_BOOT_ENABLE | SDMMC_1_DISABLE |
-                      SDMMC_0_DISABLE | NFC_DISABLE | SPI_1_DISABLE |
+        port.writeu32(GPBR_0, EXT_MEM_BOOT_ENABLE |
+                      NFC_DISABLE | SPI_1_DISABLE |
                       QSPI_1_DISABLE | QSPI_0_DISABLE)
 
         print("-I- === Done. ===")
