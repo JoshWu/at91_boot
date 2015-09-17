@@ -1,0 +1,4 @@
+# as env.txt env_tmp.txt is auto-generated, so add them to ignore list
+
+env.txt
+env_tmp.txt
