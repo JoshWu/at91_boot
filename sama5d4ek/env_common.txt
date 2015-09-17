@@ -1,0 +1,1 @@
+dtb_file=sama5d4ek.dtb

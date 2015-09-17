@@ -1,0 +1,2 @@
+dtb_file=at91-sama5d4_xplained_pda4.dtb
+ethaddr=

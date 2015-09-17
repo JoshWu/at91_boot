@@ -1,0 +1,4 @@
+dtb_file=at91sam9n12ek.dtb
+bootargs_nfs_buildroot=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=10.217.12.45:/nfsroot/rootfs/buildroot-at91sam9 ip=dhcp
+bootargs_nfs=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=10.217.12.45:/nfsroot/rootfs/buildroot-at91sam9 ip=dhcp
+bootcmd=setenv bootargs $bootargs_nand; run bootcmd_tftp

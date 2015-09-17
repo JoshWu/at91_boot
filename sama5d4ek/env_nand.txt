@@ -1,0 +1,14 @@
+# disable mmc boot in BSC_CR
+demo_restart=mw.l 0xFC068654 0x66830002 1; reset;
+# turn PE9 (D9)
+turn_on_led=mw.l 0xFC06D000 0x00000200; mw.l 0xFC06D010 0x00000200; mw.l 0xFC06D030 0x00000200;
+print_err_msg=run turn_on_led;echo $err_msg; loop 0xFC068654 1;
+# bootstrap pmecc header
+pmecc_header=0xc1e04e07
+# file names
+demo_bootstrap_file=sama5d4ek-nandflashboot-uboot-3.7.1.bin
+demo_uboot_file=u-boot-sama5d4ek.bin
+demo_dtb_file=at91-sama5d4ek.dtb
+demo_kernel_file=zImage-sama5d4ek.bin
+demo_ubi_file=atmel-qt5-demo-image-sama5d4ek.ubi
+demo_flash_rootfs=setenv load_file $demo_ubi_file; setenv load_offset $nand_ubi_offset; run nand_flash_file;

@@ -1,0 +1,12 @@
+# disable mmc boot in BSC_CR
+demo_restart=mw.l 0xFFFFFE54 0x66830002 1; reset;
+# turn PE24 (D3)
+turn_on_led=mw.l 0xFFFFFA00 0x01000000; mw.l 0xFFFFFA10 0x01000000; mw.l 0xFFFFFA30 0x01000000;
+print_err_msg=run turn_on_led;echo $err_msg; loop 0xFFFFFE54 1;
+# bootstrap pmecc header
+pmecc_header=0xc0902405
+# file names
+demo_bootstrap_file=sama5d3xek-nandflashboot-uboot-3.7.2.bin
+demo_uboot_file=u-boot-sama5d3xek.bin
+demo_kernel_file=sama5d3xek.itb
+demo_ubi_file=atmel-qt5-demo-image-sama5d3xek.ubi

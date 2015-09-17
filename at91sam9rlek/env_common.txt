@@ -1,0 +1,2 @@
+dtb_file=at91sam9rlek.dtb
+bootcmd=setenv bootargs ${bootargs_nand}; run bootcmd_mmc

@@ -1,0 +1,23 @@
+### nand demo variables
+load_addr=22000000
+# offset
+nand_bootstrap_offset=0
+nand_uboot_offset=40000
+nand_env_offset=c0000
+nand_dtb_offset=180000
+nand_kernel_offset=200000
+nand_ubi_offset=800000
+print_err=echo $err_msg;
+demo_flash=if nand erase.chip;then run demo_flash_bootstrap; run demo_flash_uboot; run demo_flash_env; run demo_flash_dtb; run demo_flash_kernel; run demo_flash_rootfs; run demo_restart;else setenv err_msg \"Error: Unable to Erase Nand Flash\": run print_err_msg; fi
+nand_flash_file=if fatload mmc 0 $load_addr $load_file; then if nand write $load_addr $load_offset $filesize; then; else setenv err_msg \"Error: Unable to flash: $load_file\"; run print_err_msg; fi; else setenv err_msg \"Error: Unable to read: $load_file\"; run print_err; fi
+nand_trim_flash_file=if fatload mmc 0 $load_addr $load_file; then if nand write.trimffs $load_addr $load_offset $filesize; then; else setenv err_msg \"Error: Unable to flash: $load_file\"; run print_err_msg; fi; else setenv err_msg \"Error: Unable to read: $load_file\"; run print_err; fi
+demo_flash_uboot=setenv load_file $demo_uboot_file; setenv load_offset $nand_uboot_offset; run nand_flash_file;
+demo_flash_env=setenv load_file $demo_env_file; setenv load_offset $nand_env_offset; run nand_flash_file;
+demo_flash_dtb=setenv load_file $demo_dtb_file; setenv load_offset $nand_dtb_offset; run nand_flash_file;
+demo_flash_kernel=setenv load_file $demo_kernel_file; setenv load_offset $nand_kernel_offset; run nand_flash_file;
+demo_flash_rootfs=setenv load_file $demo_ubi_file; setenv load_offset $nand_ubi_offset; run nand_trim_flash_file;
+# load_addr + d0
+load_addr_bootstrap=220000d0
+# load_addr + e4
+load_addr_bootstrap_vector=220000e4
+demo_flash_bootstrap=mw.b $load_addr 0xff 0x10000; mw.l $load_addr $pmecc_header 0x34; fatload mmc 0 $load_addr_bootstrap $demo_bootstrap_file; mw.l $load_addr_bootstrap_vector $filesize; nand write $load_addr 0 0x10000;
