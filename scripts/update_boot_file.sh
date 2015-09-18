@@ -30,7 +30,7 @@ if [ $# -ne 0 ]; then
 fi
 
 # combine board with media type as the full defconfig files.
-AT91_BOARD="sama5d3xek sama5d4ek sama5d4_xplained at91sam9x5ek at91sam9n12ek at91sam9m10g45ek at91sam9rlek"
+AT91_BOARD="sama5d3xek sama5d4ek sama5d3_xplained sama5d4_xplained sama5d2_xplained at91sam9x5ek at91sam9n12ek at91sam9m10g45ek at91sam9rlek"
 UBOOT_MEDIA="mmc nandflash spiflash"
 
 TOPDIR=`pwd`
