@@ -21,11 +21,20 @@ SPI_ENV_DIR=output/spi
 cp ${BOARD_DIR}/boot-spi.bin ${SPI_ENV_DIR}/
 cp ${BOARD_DIR}/u-boot-spi.bin ${SPI_ENV_DIR}/
 
-echo "Done: Finished copying to" ${SPI_ENV_DIR}
+echo "Done: Finished copying binaries to" ${SPI_ENV_DIR}
+echo
+
+echo "Will run sam-ba to flash the binaries(boot-spi.bin, u-boot-spi.bin, uboot.env) to board"
+echo "You need to:"
+echo "1. Connect usb cable to the board."
+echo "2. CLOSE the BOOT_DIS pin or press the CS_BOOT button"
+echo "3. Power on or reset the board."
+echo "4. OPEN the BOOT_DIS pin and release CS_BOOT button to enable spiflash."
+echo
 
 while true
 do
-	read -n 1 -p "Will run sam-ba to flash the binaries(boot-spi.bin, u-boot-spi.bin, uboot.env) to board[y/n]:"
+	read -n 1 -p "Do you finish above steps? [y/n]:"
 	case $REPLY in
 		Y|y)
 			_SAMBA_SCRIPT=$(find ${BOARD_DIR} -maxdepth 1 -type f -name "*.sh")
@@ -43,6 +52,7 @@ do
 			break;
 			;;
 		*)
+			echo
 			echo "You cancelled the flash process, So nothing flashed into board!";
 			break;
 			;;
