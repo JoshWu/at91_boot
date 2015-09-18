@@ -2,9 +2,18 @@
 
 # Usage: ./build_boot_spi.sh <board name>
 
-./scripts/gen_ubootenv.sh $1 || exit 1
+BOARD_DIRS=$(find . -maxdepth 1 -type d -name "*$1*")
+if [ x"$BOARD_DIRS" = x ]; then
+	echo "Error: not found folder: $1"
+	exit 1
+fi
+# find two of them, just use the first one
+BOARD_DIR=`echo $BOARD_DIRS | cut -d\  -f 1`
 
-BOARD_DIR=$(find . -maxdepth 1 -type d -name "*$1*")
+echo "Genrate U-Boot environment in folder: ${BOARD_DIR}"
+./scripts/gen_ubootenv.sh $1 || exit 1
+echo "Done! you can check the env in output/spi/uboot.env"
+echo
 
 SPI_ENV_DIR=output/spi
 
