@@ -91,5 +91,5 @@ mkdir -p output/spi
 ./mkenvimage -s 0x4000 -o output/sd/uboot.env env_tmp.txt
 
 # spi env binary
-./mkenvimage -s 0x4000 -p 0x0 -o output/spi/uboot.env env_tmp.txt
+./mkenvimage -s 0x2000 -p 0x0 -o output/spi/uboot.env env_tmp.txt
 

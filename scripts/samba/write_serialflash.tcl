@@ -37,7 +37,7 @@ set ubootEnvFile	"../output/spi/uboot.env"
 ## DataFlash Mapping
 set bootStrapAddr	0x000000
 set ubootAddr		0x008000
-set ubootEnvAddr	0x004000
+set ubootEnvAddr	0x006000
 
 ## serial Flash program
 puts "-I- === Init SerialFlash ==="
