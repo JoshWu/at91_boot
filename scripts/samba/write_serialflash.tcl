@@ -35,7 +35,6 @@ set ubootFile		"u-boot-spi.bin"
 set ubootEnvFile	"../output/spi/uboot.env"
 
 ## DataFlash Mapping
-set bootStrapAddr	0x000000
 set ubootAddr		0x008000
 set ubootEnvAddr	0x006000
 
