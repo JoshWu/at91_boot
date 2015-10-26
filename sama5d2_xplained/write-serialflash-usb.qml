@@ -33,7 +33,7 @@ Script {
             print("-I- === Load AT91Bootstrap in the first sector ===")
             port.executeAppletWrite(0x000000, "../output/spi/boot-spi.bin")
             print("-I- === Load u-boot environment ===")
-            port.executeAppletWrite(0x004000, "../output/spi/uboot.env")
+            port.executeAppletWrite(0x006000, "../output/spi/uboot.env")
             print("-I- === Load u-boot ===")
             port.executeAppletWrite(0x008000, "../output/spi/u-boot-spi.bin")
 
