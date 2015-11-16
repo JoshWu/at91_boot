@@ -26,10 +26,17 @@ echo
 
 echo "Will run sam-ba to flash the binaries(boot-spi.bin, u-boot-spi.bin, uboot.env) to board"
 echo "You need to:"
-echo "1. Connect usb cable to the board."
-echo "2. CLOSE the BOOT_DIS pin or press the CS_BOOT button"
-echo "3. Power on or reset the board."
-echo "4. OPEN the BOOT_DIS pin and release CS_BOOT button to enable spiflash."
+
+SPI_DETECT_README=spi_detect.txt
+if [ -f ${BOARD_DIR}/${SPI_DETECT_README} ]; then
+	cat ${BOARD_DIR}/${SPI_DETECT_README}
+else
+	echo "1. Connect usb cable to the board."
+	echo "2. CLOSE the BMS or BOOT_DIS jump pins or press the DIS_BOOT/CS_BOOT button"
+	echo "3. Power on or reset the board"
+	echo "4. Make sure the SPI jump pin is closed"
+	echo "5. OPEN the BMS or BOOT_DIS jump pins and release DIS_BOOT/CS_BOOT button to enable spiflash."
+fi
 echo
 
 while true
