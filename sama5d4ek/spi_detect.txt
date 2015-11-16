@@ -1,0 +1,5 @@
+1. Connect usb cable to the board.
+2. Press DIS_BOOT button and reset the board.
+3. You can see the serial output like: RomBOOT
+4. Release DIS_BOOT button.
+5. Make sure the JP6 is closed
