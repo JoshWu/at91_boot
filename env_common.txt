@@ -22,6 +22,8 @@ bootcmd_nand=nand read 0x21000000 0x00180000 0x00080000; nand read 0x22000000 0x
 bootcmd_tftp=run get_dhcp;tftp $dtb_addr ${tftp_path_kernel}/$dtb_file; tftp $load_addr ${tftp_path_kernel}/zImage;bootz $load_addr - $dtb_addr
 bootcmd_mmc=mmcinfo; fatload mmc ${mmc_dev} 0x21000000 ${dtb_file}; fatload mmc ${mmc_dev} 0x22000000 zImage;bootz 0x22000000 - 0x21000000
 bootcmd=setenv bootargs $bootargs_nfs_buildroot; setenv bootargs $bootargs $video; run bootcmd_tftp
+# update uboot in memory from tftp
+update_ddr_uboot=run get_dhcp; tftp $uboot_ddr_addr ${tftp_path_uboot}/u-boot.bin; go $uboot_ddr_addr
 # update mmc files from tftp
 update_mmc_bootstrap=run get_dhcp; tftp $load_addr ${tftp_path_bootstrap}/boot.bin;fatwrite mmc ${mmc_dev} $fileaddr boot.bin $filesize
 update_mmc_uboot=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.bin;fatwrite mmc ${mmc_dev} $fileaddr u-boot.bin $filesize
@@ -32,5 +34,3 @@ update_mmc_uboot_img=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.img
 update_spi_bootstrap=sf probe 0; sf erase 0 6000; run get_dhcp; tftp $load_addr ${tftp_path_bootstrap}/boot.bin;sf write $fileaddr 0 $filesize;
 update_spi_uboot=sf probe 0; sf erase 8000 80000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.bin;sf write $fileaddr 0x8000 $filesize
 update_spi_env=sf probe 0; sf erase 6000 2000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/uboot-spi.env;sf write $fileaddr 0x6000 $filesize
-# update uboot in memory from tftp
-update_ddr_uboot=run get_dhcp; tftp $uboot_ddr_addr ${tftp_path_uboot}/u-boot.bin; go $uboot_ddr_addr
