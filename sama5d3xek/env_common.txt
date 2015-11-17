@@ -1,2 +1,1 @@
 dtb_file=sama5d34ek.dtb
-bootargs_nfs=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=10.217.12.45:/nfsroot/rootfs/buildroot-2012.11.1-sama5d3 ip=dhcp

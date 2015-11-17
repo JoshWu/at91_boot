@@ -18,12 +18,9 @@ get_dhcp=setenv old_serverip $serverip;setenv autoload no;dhcp;setenv serverip $
 bootargs_nand=console=ttyS0,115200 earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256K(env),256k(env_redundent),256k(spare),512k(dtb),6M(kernel)ro,-(rootfs) rootfstype=ubifs ubi.mtd=7 root=ubi0:rootfs
 bootargs_nfs_buildroot=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=10.217.12.45:/nfsroot/rootfs/buildroot-2014.05-at91sam9 ip=dhcp
 bootargs_nfs_yocto=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=10.217.12.45:/nfsroot/rootfs/yocto ip=dhcp
-bootargs_nfs=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=10.217.12.45:/nfsroot/rootfs/buildroot-2014.05-at91sam9 ip=dhcp
 bootcmd_nand=nand read 0x21000000 0x00180000 0x00080000; nand read 0x22000000 0x00200000 0x00600000;bootz 0x22000000 - 0x21000000
 bootcmd_tftp=run get_dhcp;tftp $dtb_addr ${tftp_path_kernel}/$dtb_file; tftp $load_addr ${tftp_path_kernel}/zImage;bootz $load_addr - $dtb_addr
-bootcmd_tftp_nfs=setenv bootargs $bootargs_nfs; run bootcmd_tftp
 bootcmd_mmc=mmcinfo; fatload mmc ${mmc_dev} 0x21000000 ${dtb_file}; fatload mmc ${mmc_dev} 0x22000000 zImage;bootz 0x22000000 - 0x21000000
-bootcmd_nfs=setenv bootargs $bootargs_nfs;run bootcmd_nand
 bootcmd=setenv bootargs $bootargs_nfs_buildroot; setenv bootargs $bootargs $video; run bootcmd_tftp
 update_uboot_env=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/uboot.env;fatwrite mmc ${mmc_dev} $fileaddr uboot.env $filesize
 update_uboot=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.bin;fatwrite mmc ${mmc_dev} $fileaddr u-boot.bin $filesize
