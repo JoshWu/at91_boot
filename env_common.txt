@@ -1,12 +1,15 @@
+# this files has all settings are related with ethernet.
 melon_ip=10.217.12.45
 shaarm01_ip=10.217.6.34
 serverip=10.217.12.45
 load_addr=22000000
 dtb_addr=21000000
+uboot_ddr_addr=26f00000
 tftp_path_kernel=josh/kernel
 tftp_path_uboot=josh/u-boot
 tftp_path_bootstrap=josh/at91bootstrap
 mmc_dev=0
+bootdelay=1
 video_pda4=video=LVDS-1:480x272-16
 video_pda7=video=LVDS-1:800x480-16
 video_hdmi=video=HDMI-A-1:800x600-16 video=LVDS-1:d
@@ -30,6 +33,5 @@ update_uboot_img=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.img;fat
 update_spi_boot=sf probe 0; sf erase 0 6000; run get_dhcp; tftp $load_addr ${tftp_path_bootstrap}/boot.bin;sf write $fileaddr 0 $filesize;
 update_spi_uboot=sf probe 0; sf erase 8000 80000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.bin;sf write $fileaddr 0x8000 $filesize
 update_spi_env=sf probe 0; sf erase 6000 2000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/uboot-spi.env;sf write $fileaddr 0x6000 $filesize
-bootdelay=1
-uboot_ddr_addr=26f00000
-update_uboot_ddr=run get_dhcp; tftp $uboot_ddr_addr ${tftp_path_uboot}/u-boot.bin; go $uboot_ddr_addr
+# update uboot in memory from tftp
+update_ddr_uboot=run get_dhcp; tftp $uboot_ddr_addr ${tftp_path_uboot}/u-boot.bin; go $uboot_ddr_addr
