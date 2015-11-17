@@ -34,3 +34,11 @@ update_mmc_uboot_img=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.img
 update_spi_bootstrap=sf probe 0; sf erase 0 6000; run get_dhcp; tftp $load_addr ${tftp_path_bootstrap}/boot.bin;sf write $fileaddr 0 $filesize;
 update_spi_uboot=sf probe 0; sf erase 8000 80000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.bin;sf write $fileaddr 0x8000 $filesize
 update_spi_env=sf probe 0; sf erase 6000 2000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/uboot-spi.env;sf write $fileaddr 0x6000 $filesize
+# update nandflash bootable binaries from tftp
+# load_addr + d0
+load_addr_bootstrap=220000d0
+# load_addr + e4
+load_addr_bootstrap_vector=220000e4
+update_nand_bootstrap=nand erase 0 10000; run get_dhcp; mw.b $load_addr 0xff 0x10000; mw.l $load_addr $pmecc_header 0x34; tftp $load_addr_bootstrap ${tftp_path_bootstrap}/boot.bin; mw.l $load_addr_bootstrap_vector $filesize; nand write $load_addr 0 0x10000;
+update_nand_uboot=nand erase 40000 80000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.bin;nand write $fileaddr 0x40000 $filesize;
+update_nand_env=nand erase 0xc0000 40000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/uboot.env;nand write $fileaddr 0xc0000 $filesize;
