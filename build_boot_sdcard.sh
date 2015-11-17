@@ -49,3 +49,19 @@ do
 			;;
 	esac
 done
+
+# umount the SD card
+while true
+do
+	read -n 1 -p "Do you want to reject the SD card? [y/n]:"
+	case $REPLY in
+		Y|y)
+			sudo umount /media/${LOGNAME}/${SDCARD_NAME}
+			break;
+			;;
+		*)
+			break;
+			;;
+	esac
+done
+echo ""
