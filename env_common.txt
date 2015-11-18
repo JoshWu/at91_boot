@@ -4,6 +4,7 @@ shaarm01_ip=10.217.6.34
 load_addr=22000000
 dtb_addr=21000000
 uboot_ddr_addr=26f00000
+baudrate=115200
 file_uboot=u-boot.bin
 file_uboot_env=uboot.env
 file_bootstrap=boot.bin
@@ -14,9 +15,9 @@ video_pda7=video=LVDS-1:800x480-16
 video_hdmi=video=HDMI-A-1:800x600-16 video=LVDS-1:d
 video=video=LVDS-1:480x272-16
 get_dhcp=setenv old_serverip $serverip;setenv autoload no;dhcp;setenv serverip $old_serverip;
-bootargs_nand=console=ttyS0,115200 earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256K(env),256k(env_redundent),256k(spare),512k(dtb),6M(kernel)ro,-(rootfs) rootfstype=ubifs ubi.mtd=7 root=ubi0:rootfs
-bootargs_nfs_buildroot=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/buildroot-2014.05-at91sam9 ip=dhcp
-bootargs_nfs_yocto=console=ttyS0,115200 mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/yocto ip=dhcp
+bootargs_nand=console=ttyS0,${baudrate} earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256K(env),256k(env_redundent),256k(spare),512k(dtb),6M(kernel)ro,-(rootfs) rootfstype=ubifs ubi.mtd=7 root=ubi0:rootfs
+bootargs_nfs_buildroot=console=ttyS0,${baudrate} mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/buildroot-2014.05-at91sam9 ip=dhcp
+bootargs_nfs_yocto=console=ttyS0,${baudrate} mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/yocto ip=dhcp
 bootcmd_nand=nand read ${dtb_addr} 0x00180000 0x00080000; nand read ${load_addr} 0x00200000 0x00600000;bootz ${load_addr} - ${dtb_addr}
 bootcmd_tftp=run get_dhcp;tftp $dtb_addr ${tftp_path_kernel}/$dtb_file; tftp $load_addr ${tftp_path_kernel}/zImage;bootz $load_addr - $dtb_addr
 bootcmd_mmc=mmcinfo; fatload mmc ${mmc_dev} ${dtb_addr} ${dtb_file}; fatload mmc ${mmc_dev} ${load_addr} zImage;bootz ${load_addr} - ${dtb_addr}
