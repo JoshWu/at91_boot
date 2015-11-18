@@ -1,3 +1,4 @@
 dtb_file=at91sam9m10g45ek.dtb
 dtb_addr=71000000
 load_addr=72000000
+update_nand_bootstrap=
