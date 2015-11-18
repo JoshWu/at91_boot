@@ -26,6 +26,16 @@ nand_uboot_size=80000
 nand_env_size=40000
 nand_dtb_size=80000
 nand_kernel_size=600000
+# spi offset
+spi_uboot_off=8000
+spi_env_off=6000
+spi_dtb_off=60000
+spi_kernel_off=6c000
+# spi size
+spi_bootstrap_size=6000
+spi_uboot_size=58000
+spi_env_size=2000
+spi_dtb_size=c000
 get_dhcp=setenv old_serverip $serverip;setenv autoload no;dhcp;setenv serverip $old_serverip;
 bootargs_nand=console=ttyS0,${baudrate} earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256K(env),256k(env_redundent),256k(spare),512k(dtb),6M(kernel)ro,-(rootfs) rootfstype=ubifs ubi.mtd=7 root=ubi0:rootfs
 bootargs_nfs_buildroot=console=ttyS0,${baudrate} mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/buildroot-2014.05-at91sam9 ip=dhcp
@@ -43,9 +53,9 @@ update_mmc_env=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot_env
 update_mmc_spl=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_bootstrap};fatwrite mmc ${mmc_dev} $fileaddr ${file_bootstrap} $filesize
 update_mmc_uboot_img=run get_dhcp; tftp $load_addr ${tftp_path_uboot}/u-boot.img;fatwrite mmc ${mmc_dev} $fileaddr u-boot.img $filesize
 # update spi bootable binaries from tftp
-update_spi_bootstrap=sf probe 0; sf erase 0 6000; run get_dhcp; tftp $load_addr ${tftp_path_bootstrap}/${file_bootstrap};sf write $fileaddr 0 $filesize;
-update_spi_uboot=sf probe 0; sf erase 8000 80000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot};sf write $fileaddr 0x8000 $filesize
-update_spi_env=sf probe 0; sf erase 6000 2000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot_env};sf write $fileaddr 0x6000 $filesize
+update_spi_bootstrap=sf probe 0; sf erase 0 ${spi_bootstrap_size}; run get_dhcp; tftp $load_addr ${tftp_path_bootstrap}/${file_bootstrap};sf write $fileaddr 0 $filesize;
+update_spi_uboot=sf probe 0; sf erase ${spi_uboot_off} ${spi_uboot_size}; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot};sf write $fileaddr ${spi_uboot_off} $filesize
+update_spi_env=sf probe 0; sf erase ${spi_env_off} ${spi_env_size}; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot_env};sf write $fileaddr ${spi_env_off} $filesize
 # update nandflash bootable binaries from tftp
 # load_addr + d0
 load_addr_bootstrap=220000d0
