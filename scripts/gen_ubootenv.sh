@@ -47,10 +47,10 @@ function generate_random_eth_addr() {
 function prepare_uboot_env() {
 	local _BOARD_PATH=$1
 
-	# combile env_nand.txt to env.txt
-	cat env_config.txt env_common.txt env_nand.txt > env.txt
+	# combine env_demo_auto_flash.txt to env.txt
+	cat env_config.txt env_common.txt env_demo_auto_flash.txt > env.txt
 
-	cat ${_BOARD_PATH}/env_common.txt ${_BOARD_PATH}/env_nand.txt > ${_BOARD_PATH}/env.txt
+	cat ${_BOARD_PATH}/env_common.txt ${_BOARD_PATH}/env_demo_auto_flash.txt > ${_BOARD_PATH}/env.txt
 }
 
 # check parameters
