@@ -2,3 +2,5 @@ serverip=10.217.12.45
 tftp_path_kernel=josh/kernel
 tftp_path_uboot=josh/u-boot
 tftp_path_bootstrap=josh/at91bootstrap
+nfs_path_buildroot=/nfsroot/rootfs/buildroot-2014.05-at91sam9
+nfs_path_yocto=/nfsroot/rootfs/yocto

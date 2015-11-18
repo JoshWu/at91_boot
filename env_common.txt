@@ -37,13 +37,14 @@ spi_uboot_size=58000
 spi_env_size=2000
 spi_dtb_size=c000
 get_dhcp=setenv old_serverip $serverip;setenv autoload no;dhcp;setenv serverip $old_serverip;
-bootargs_nand=console=ttyS0,${baudrate} earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256K(env),256k(env_redundent),256k(spare),512k(dtb),6M(kernel)ro,-(rootfs) rootfstype=ubifs ubi.mtd=7 root=ubi0:rootfs
-bootargs_nfs_buildroot=console=ttyS0,${baudrate} mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/buildroot-2014.05-at91sam9 ip=dhcp
-bootargs_nfs_yocto=console=ttyS0,${baudrate} mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/yocto ip=dhcp
+# bootargs: add baudrate, video and nfs_path
+complete_bootargs=setenv bootargs $bootargs console=ttyS0,${baudrate} $video nfsroot=${serverip}:${nfs_path}
+bootargs_nand=mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256K(env),256k(env_redundent),256k(spare),512k(dtb),6M(kernel)ro,-(rootfs) rootfstype=ubifs ubi.mtd=7 root=ubi0:rootfs
+bootargs_nfs=mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw ip=dhcp
 bootcmd_nand=nand read ${dtb_addr} ${nand_dtb_off} ${nand_dtb_size}; nand read ${load_addr} ${nand_kernel_off} ${nand_kernel_size}; bootz ${load_addr} - ${dtb_addr}
 bootcmd_tftp=run get_dhcp;tftp $dtb_addr ${tftp_path_kernel}/$dtb_file; tftp $load_addr ${tftp_path_kernel}/zImage;bootz $load_addr - $dtb_addr
 bootcmd_mmc=mmcinfo; fatload mmc ${mmc_dev} ${dtb_addr} ${dtb_file}; fatload mmc ${mmc_dev} ${load_addr} zImage;bootz ${load_addr} - ${dtb_addr}
-bootcmd=setenv bootargs $bootargs_nfs_buildroot; setenv bootargs $bootargs $video; run bootcmd_tftp
+bootcmd=setenv bootargs $bootargs_nfs; setenv nfs_path ${nfs_path_buildroot}; run complete_bootargs; run bootcmd_tftp
 # update uboot in memory from tftp
 update_ddr_uboot=run get_dhcp; tftp $uboot_ddr_addr ${tftp_path_uboot}/${file_uboot}; go $uboot_ddr_addr
 # update mmc files from tftp
