@@ -14,11 +14,23 @@ video_pda4=video=LVDS-1:480x272-16
 video_pda7=video=LVDS-1:800x480-16
 video_hdmi=video=HDMI-A-1:800x600-16 video=LVDS-1:d
 video=video=LVDS-1:480x272-16
+# nand offset
+nand_uboot_off=40000
+nand_env_off=c0000
+nand_dtb_off=180000
+nand_kernel_off=200000
+nand_ubi_off=800000
+# nand size
+nand_bootstrap_size=10000
+nand_uboot_size=80000
+nand_env_size=40000
+nand_dtb_size=80000
+nand_kernel_size=600000
 get_dhcp=setenv old_serverip $serverip;setenv autoload no;dhcp;setenv serverip $old_serverip;
 bootargs_nand=console=ttyS0,${baudrate} earlyprintk mtdparts=atmel_nand:256k(bootstrap)ro,512k(uboot)ro,256K(env),256k(env_redundent),256k(spare),512k(dtb),6M(kernel)ro,-(rootfs) rootfstype=ubifs ubi.mtd=7 root=ubi0:rootfs
 bootargs_nfs_buildroot=console=ttyS0,${baudrate} mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/buildroot-2014.05-at91sam9 ip=dhcp
 bootargs_nfs_yocto=console=ttyS0,${baudrate} mtdparts=atmel_nand:8M(kernel)ro,220M(rootfs),20M(test),-(protect) rw root=/dev/nfs rw nfsroot=${serverip}:/nfsroot/rootfs/yocto ip=dhcp
-bootcmd_nand=nand read ${dtb_addr} 0x00180000 0x00080000; nand read ${load_addr} 0x00200000 0x00600000;bootz ${load_addr} - ${dtb_addr}
+bootcmd_nand=nand read ${dtb_addr} ${nand_dtb_off} ${nand_dtb_size}; nand read ${load_addr} ${nand_kernel_off} ${nand_kernel_size}; bootz ${load_addr} - ${dtb_addr}
 bootcmd_tftp=run get_dhcp;tftp $dtb_addr ${tftp_path_kernel}/$dtb_file; tftp $load_addr ${tftp_path_kernel}/zImage;bootz $load_addr - $dtb_addr
 bootcmd_mmc=mmcinfo; fatload mmc ${mmc_dev} ${dtb_addr} ${dtb_file}; fatload mmc ${mmc_dev} ${load_addr} zImage;bootz ${load_addr} - ${dtb_addr}
 bootcmd=setenv bootargs $bootargs_nfs_buildroot; setenv bootargs $bootargs $video; run bootcmd_tftp
@@ -39,6 +51,6 @@ update_spi_env=sf probe 0; sf erase 6000 2000; run get_dhcp; tftp $load_addr ${t
 load_addr_bootstrap=220000d0
 # load_addr + e4
 load_addr_bootstrap_vector=220000e4
-update_nand_bootstrap=nand erase 0 10000; run get_dhcp; mw.b $load_addr 0xff 0x10000; mw.l $load_addr $pmecc_header 0x34; tftp $load_addr_bootstrap ${tftp_path_bootstrap}/${file_bootstrap}; mw.l $load_addr_bootstrap_vector $filesize; nand write $load_addr 0 0x10000;
-update_nand_uboot=nand erase 40000 80000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot};nand write $fileaddr 0x40000 $filesize;
-update_nand_env=nand erase 0xc0000 40000; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot_env};nand write $fileaddr 0xc0000 $filesize;
+update_nand_bootstrap=nand erase 0 ${nand_bootstrap_size}; run get_dhcp; mw.b $load_addr 0xff ${nand_bootstrap_size}; mw.l $load_addr $pmecc_header 0x34; tftp $load_addr_bootstrap ${tftp_path_bootstrap}/${file_bootstrap}; mw.l $load_addr_bootstrap_vector $filesize; nand write $load_addr 0 ${nand_bootstrap_size};
+update_nand_uboot=nand erase ${nand_uboot_off} ${nand_uboot_size}; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot};nand write $fileaddr ${nand_uboot_off} $filesize;
+update_nand_env=nand erase ${nand_env_off} ${nand_env_size}; run get_dhcp; tftp $load_addr ${tftp_path_uboot}/${file_uboot_env};nand write $fileaddr ${nand_env_off} $filesize;
