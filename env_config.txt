@@ -1,0 +1,4 @@
+serverip=10.217.12.45
+tftp_path_kernel=josh/kernel
+tftp_path_uboot=josh/u-boot
+tftp_path_bootstrap=josh/at91bootstrap

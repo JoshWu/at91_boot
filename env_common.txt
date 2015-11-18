@@ -1,13 +1,9 @@
 # this files has all settings are related with ethernet.
 melon_ip=10.217.12.45
 shaarm01_ip=10.217.6.34
-serverip=10.217.12.45
 load_addr=22000000
 dtb_addr=21000000
 uboot_ddr_addr=26f00000
-tftp_path_kernel=josh/kernel
-tftp_path_uboot=josh/u-boot
-tftp_path_bootstrap=josh/at91bootstrap
 file_uboot=u-boot.bin
 file_uboot_env=uboot.env
 file_bootstrap=boot.bin

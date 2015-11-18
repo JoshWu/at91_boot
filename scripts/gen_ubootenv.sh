@@ -48,7 +48,7 @@ function prepare_uboot_env() {
 	local _BOARD_PATH=$1
 
 	# combile env_nand.txt to env.txt
-	cat env_common.txt env_nand.txt > env.txt
+	cat env_config.txt env_common.txt env_nand.txt > env.txt
 
 	cat ${_BOARD_PATH}/env_common.txt ${_BOARD_PATH}/env_nand.txt > ${_BOARD_PATH}/env.txt
 }
