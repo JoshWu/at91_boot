@@ -5,6 +5,16 @@ Also it can flash the bootable code to spi flash for all at91 boards as well.
 In the meantime, it will also has specified U-Boot variables for each board.
 You can configure them by yourself and customized for each board.
 
+# Preparation
+## Setup U-Boot variables
+This bootable media has builtin u-boot variables. To make the variables work you
+need to modify env_config.txt first to adapt to your work environment.
+* serverip: your tftp server ip
+* tftp_path_xxx: your tftp path for kernel, u-boot, at91bootstrap.
+* nfs_path_xxx: your nfs rootfs path for kernel to mount.
+
+By default, U-Boot will load kernel from tftp path. And mount the nfs in the server.
+
 # Usage
 ## Make a bootable SD card
 1. Prepare a SD card, FAT format, and the volume name should be: `SDCARD_BOOT`
@@ -26,11 +36,14 @@ You can configure them by yourself and customized for each board.
 
 # Configuration the U-Boot variables
 ## U-Boot environment configurate
-1. env_common.txt is a common u-boot environment variables. It's for all boards.
-2. <board name>/env_common.txt is board relevant, it will override same
+1. env_config.txt is user environment related. It defines your server ip, your tftp
+   path in the server. When you use this project first time, please setup this.
+2. env_common.txt is a common u-boot environment variables. It's for all boards.
+3. <board name>/env_common.txt is board relevant, it will override same
    variables in the top dir's env_common.txt.
-3. env_nand.txt is some variables & command related with nand operation.
-   It can flash the SD card binary files into nand flash.
+4. env_demo_auto_flash.txt is some variables & command related with mmc operation.
+   It can flash the SD card binary demo files into nand/spi flash. You can insert
+   the SD can run it to flash demo automatically.
 
 # Update the at91bootstrap & u-boot binaries:
 1. cd at91bootstrap source folder
